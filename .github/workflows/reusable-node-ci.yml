@@ -1,0 +1,63 @@
+name: Reusable Node CI
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: "22"
+        required: false
+      working-directory:
+        type: string
+        default: "."
+        required: false
+      run-lint:
+        type: boolean
+        default: true
+        required: false
+      run-typecheck:
+        type: boolean
+        default: true
+        required: false
+      run-test:
+        type: boolean
+        default: true
+        required: false
+      run-build:
+        type: boolean
+        default: true
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  node-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Lint
+        if: ${{ inputs.run-lint }}
+        run: npm run lint
+      - name: Typecheck
+        if: ${{ inputs.run-typecheck }}
+        run: npm run typecheck
+      - name: Test
+        if: ${{ inputs.run-test }}
+        run: npm test
+      - name: Build
+        if: ${{ inputs.run-build }}
+        run: npm run build

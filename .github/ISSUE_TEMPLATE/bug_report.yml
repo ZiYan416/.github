@@ -1,0 +1,46 @@
+name: "🐛 Bug Report / 缺陷报告"
+description: "提供可复现的缺陷信息（禁止粘贴密钥或隐私数据）"
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: "请先检索已有 Issue。敏感漏洞请按 SECURITY.md 私密报告，不要在此提交。"
+  - type: textarea
+    id: summary
+    attributes:
+      label: "问题描述 / Summary"
+      description: "描述实际行为及影响"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "复现步骤 / Steps to reproduce"
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "预期行为 / Expected behavior"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: "运行环境 / Environment"
+      placeholder: "OS、项目版本、运行时、浏览器等"
+  - type: textarea
+    id: logs
+    attributes:
+      label: "脱敏日志 / Sanitized evidence"
+      description: "只提交脱敏后的日志、截图或复现数据"
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "提交前确认 / Checklist"
+      options:
+        - label: "我已经搜索已有 Issue，并确认没有重复。"
+          required: true
+        - label: "我未提交密钥、Cookie、个人数据或其他敏感信息。"
+          required: true

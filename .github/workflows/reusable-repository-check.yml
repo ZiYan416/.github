@@ -1,0 +1,24 @@
+name: Reusable repository health
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check essential documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s README.md || { echo "::error::README.md is missing or empty"; exit 1; }
+          if [[ ! -f LICENSE && ! -f LICENSE.md && ! -f LICENSE.txt ]]; then
+            echo "::warning::No repository-specific license found; choose an appropriate license before publishing code."
+          fi
